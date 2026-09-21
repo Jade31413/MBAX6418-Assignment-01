@@ -123,7 +123,7 @@ changing labels after seeing predictions.
 
 ## LLM versus NRC emotions
 
-We use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
+Use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
 version 0.92, created by Saif M. Mohammad and Peter D. Turney at the National Research Council Canada.
 Reference: Mohammad & Turney (2013), *Crowdsourcing a Word–Emotion Association Lexicon*,
 Computational Intelligence, 29(3), 436–465.
