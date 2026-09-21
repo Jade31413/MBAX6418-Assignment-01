@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "runs": [
+    {
+      "run": "baseline",
+      "rows": 100,
+      "status": "passed",
+      "checks": [
+        "sample reproducibility",
+        "request allowlist/no rating metadata",
+        "raw-response parsing",
+        "reference labels",
+        "confusion matrix",
+        "precision/recall",
+        "emotion matrix",
+        "combined filter counts",
+        "dashboard bundle reconciliation"
+      ]
+    },
+    {
+      "run": "balanced",
+      "rows": 150,
+      "status": "passed",
+      "checks": [
+        "sample reproducibility",
+        "request allowlist/no rating metadata",
+        "raw-response parsing",
+        "reference labels",
+        "confusion matrix",
+        "precision/recall",
+        "emotion matrix",
+        "combined filter counts",
+        "dashboard bundle reconciliation"
+      ]
+    }
+  ],
+  "browser_validation": "passed"
+}

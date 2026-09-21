@@ -1,0 +1,4 @@
+class,reference,predicted
+NEGATIVE,50,67
+NEUTRAL,50,20
+POSITIVE,50,63

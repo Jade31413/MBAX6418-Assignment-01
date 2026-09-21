@@ -1,0 +1,109 @@
+{
+  "count": 150,
+  "correct": 110,
+  "incorrect": 40,
+  "accuracy": 0.7333333333333333,
+  "balanced_accuracy": 0.7333333333333334,
+  "macro_f1": 0.6976750551971791,
+  "weighted_f1": 0.6976750551971791,
+  "majority_baseline_accuracy": 0.3333333333333333,
+  "classes": [
+    "NEGATIVE",
+    "NEUTRAL",
+    "POSITIVE"
+  ],
+  "confusion_matrix": [
+    [
+      46,
+      2,
+      2
+    ],
+    [
+      21,
+      16,
+      13
+    ],
+    [
+      0,
+      2,
+      48
+    ]
+  ],
+  "matrix_orientation": "rows=rating reference, columns=model prediction",
+  "per_class": {
+    "NEGATIVE": {
+      "support": 50,
+      "predicted_count": 67,
+      "true_positive": 46,
+      "precision": 0.6865671641791045,
+      "recall": 0.92,
+      "f1": 0.7863247863247863
+    },
+    "NEUTRAL": {
+      "support": 50,
+      "predicted_count": 20,
+      "true_positive": 16,
+      "precision": 0.8,
+      "recall": 0.32,
+      "f1": 0.45714285714285713
+    },
+    "POSITIVE": {
+      "support": 50,
+      "predicted_count": 63,
+      "true_positive": 48,
+      "precision": 0.7619047619047619,
+      "recall": 0.96,
+      "f1": 0.8495575221238937
+    }
+  },
+  "zero_division_policy": "precision/recall/F1 are 0 when their denominator is 0; balanced accuracy averages supported classes only",
+  "rating_distribution": {
+    "1": 44,
+    "2": 6,
+    "3": 50,
+    "4": 2,
+    "5": 48
+  },
+  "mismatch_ids": [
+    "gift_cards:1812",
+    "gift_cards:12303",
+    "gift_cards:13299",
+    "gift_cards:17899",
+    "gift_cards:19061",
+    "gift_cards:24139",
+    "gift_cards:36205",
+    "gift_cards:43473",
+    "gift_cards:48738",
+    "gift_cards:49922",
+    "gift_cards:50730",
+    "gift_cards:54095",
+    "gift_cards:60218",
+    "gift_cards:63730",
+    "gift_cards:66682",
+    "gift_cards:70632",
+    "gift_cards:72741",
+    "gift_cards:75000",
+    "gift_cards:83341",
+    "gift_cards:108170",
+    "gift_cards:108280",
+    "gift_cards:110302",
+    "gift_cards:112455",
+    "gift_cards:115588",
+    "gift_cards:118955",
+    "gift_cards:124073",
+    "gift_cards:126561",
+    "gift_cards:127074",
+    "gift_cards:132833",
+    "gift_cards:134579",
+    "gift_cards:135276",
+    "gift_cards:136827",
+    "gift_cards:137832",
+    "gift_cards:139639",
+    "gift_cards:145068",
+    "gift_cards:146760",
+    "gift_cards:148426",
+    "gift_cards:148988",
+    "gift_cards:149133",
+    "gift_cards:150433"
+  ]
+}

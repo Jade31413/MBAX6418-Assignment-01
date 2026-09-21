@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "browser": "151.0.7922.34",
+  "dashboard_sha256": "1afe92a291f681ce7b2fd9e8f3e42c0daa6854eaf59fb4a607196590bbab6524",
+  "offline_file_loading": "passed",
+  "external_requests": [],
+  "runtime_errors": [],
+  "runs": [
+    {
+      "run": "balanced",
+      "metric_and_chart_reconciliation": "passed",
+      "filter_combinations": 144,
+      "search_empty_reset_pagination_dialog": "passed"
+    },
+    {
+      "run": "baseline",
+      "metric_and_chart_reconciliation": "passed",
+      "filter_combinations": 81,
+      "search_empty_reset_pagination_dialog": "passed"
+    }
+  ],
+  "mobile_390px": "passed",
+  "text_enlargement_200_percent": "passed",
+  "review_text_safety": "passed",
+  "navigation_and_focus": "passed",
+  "webmcp": "contract tested with explicit mock registry; native support not required",
+  "screenshots": [
+    "screenshots/dashboard-overview.png",
+    "screenshots/dashboard-emotions.png",
+    "screenshots/dashboard-review-detail.png",
+    "screenshots/dashboard-mobile.png"
+  ]
+}

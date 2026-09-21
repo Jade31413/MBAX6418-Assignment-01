@@ -1,0 +1,15 @@
+{
+  "output": "dashboard.html",
+  "sha256": "1afe92a291f681ce7b2fd9e8f3e42c0daa6854eaf59fb4a607196590bbab6524",
+  "data_sha256": "dc41083a8e504c4762f595ca5cb4a34cfe6f4835470bcb4b311173bfbc2da8cf",
+  "source_hashes": {
+    "template.html": "91e263c39f87d6da72d88eb16d55a8a0596fb9180ad4241ddca551ae125e52f4",
+    "styles.css": "077243184edc6b6514219a10cf0d8a2cf31028989e341f4a0704a3dd425435dc",
+    "app.js": "043b48253f4638afbb6d9233b07497ac30034726c0bae248caedfeefbe02e78d"
+  },
+  "external_dependencies": [],
+  "rows": {
+    "baseline": 100,
+    "balanced": 150
+  }
+}

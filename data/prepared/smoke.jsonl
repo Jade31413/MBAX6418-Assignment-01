@@ -1,0 +1,4 @@
+{"review_id": "synthetic:positive", "title": "Perfect gift", "text": "Easy to send and worked immediately. I loved it!", "expected": "POSITIVE"}
+{"review_id": "synthetic:negative", "title": "Unusable", "text": "The code did not work and support refused to help. Terrible experience.", "expected": "NEGATIVE"}
+{"review_id": "synthetic:conflict", "title": "Great", "text": "Actually the card never arrived and I could not get a refund. I regret buying it.", "expected": "NEGATIVE"}
+{"review_id": "synthetic:short", "title": "Love it", "text": "Excellent!", "expected": "POSITIVE"}

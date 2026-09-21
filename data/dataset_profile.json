@@ -1,0 +1,101 @@
+{
+  "source_file": "data/Gift_Cards.jsonl.gz",
+  "compressed_bytes": 12292543,
+  "valid_rows": 152410,
+  "malformed_rows": 0,
+  "fields": [
+    "asin",
+    "helpful_vote",
+    "images",
+    "parent_asin",
+    "rating",
+    "text",
+    "timestamp",
+    "title",
+    "user_id",
+    "verified_purchase"
+  ],
+  "expected_fields_present": [
+    "asin",
+    "helpful_vote",
+    "images",
+    "parent_asin",
+    "rating",
+    "text",
+    "timestamp",
+    "title",
+    "user_id",
+    "verified_purchase"
+  ],
+  "unexpected_fields": [],
+  "field_presence_counts": {
+    "asin": 152410,
+    "helpful_vote": 152410,
+    "images": 152410,
+    "parent_asin": 152410,
+    "rating": 152410,
+    "text": 152410,
+    "timestamp": 152410,
+    "title": 152410,
+    "user_id": 152410,
+    "verified_purchase": 152410
+  },
+  "field_types": {
+    "asin": {
+      "str": 152410
+    },
+    "helpful_vote": {
+      "int": 152410
+    },
+    "images": {
+      "list": 152410
+    },
+    "parent_asin": {
+      "str": 152410
+    },
+    "rating": {
+      "float": 152410
+    },
+    "text": {
+      "str": 152410
+    },
+    "timestamp": {
+      "int": 152410
+    },
+    "title": {
+      "str": 152410
+    },
+    "user_id": {
+      "str": 152410
+    },
+    "verified_purchase": {
+      "bool": 152410
+    }
+  },
+  "missing_or_null_counts": {},
+  "rating_counts": {
+    "1": 12326,
+    "2": 1873,
+    "3": 3271,
+    "4": 6692,
+    "5": 128248
+  },
+  "three_class_counts": {
+    "NEGATIVE": 14199,
+    "NEUTRAL": 3271,
+    "POSITIVE": 134940
+  },
+  "verified_purchase_counts": {
+    "False": 10449,
+    "True": 141961
+  },
+  "unique_users": 132732,
+  "unique_asins": 1894,
+  "unique_parent_asins": 1137,
+  "helpful_votes_total": 117067,
+  "reviews_with_images": 1444,
+  "timestamp_range_utc": {
+    "earliest": "2008-08-06T01:28:26+00:00",
+    "latest": "2023-09-06T21:27:21.743000+00:00"
+  }
+}

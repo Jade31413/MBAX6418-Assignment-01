@@ -1,0 +1,24 @@
+{
+  "mode": "baseline",
+  "config": {
+    "model": "cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit",
+    "base_url": "http://dobolyi.com:9001/v1"
+  },
+  "input_sha256": "c0a7e2fb67e2e78fdf005d3912695a171b0825617e1d4d8bd9eefd02c0570fe1",
+  "prompt_sha256": "9f32e8a312e88d1cdb2d70856e0c4d58927110b90c525f62b9e64a42744282b6",
+  "prompt_path": "prompts/binary_emotion.txt",
+  "sample_count": 100,
+  "settings": {
+    "model": "cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit",
+    "temperature": 0,
+    "top_p": 1,
+    "seed": 6418,
+    "max_tokens": 512,
+    "response_format": {
+      "type": "json_object"
+    },
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  }
+}

@@ -1,10 +1,29 @@
-# Amazon Gift Cards: Sentiment and Emotion Analysis
+"""Generate the evidence draft directly from saved outputs (no invented metrics)."""
+import json
+from common import ROOT, read_jsonl, file_hash
 
-**Status: Dashboard and analysis completed and browser-verified; student review and Canvas submission remain pending.**
-This is an agent-generated evidence draft. The student must check the saved outputs and revise
-the interpretations in their own words before submission.
 
-## Dashboard
+def pct(v):
+    return "n/a" if v is None else f"{v:.2%}"
+
+
+def table(headers, rows):
+    return "\n".join(["| " + " | ".join(headers) + " |", "| " + " | ".join(["---"] * len(headers)) + " |"] + ["| " + " | ".join(str(v).replace("|", "\\|").replace("\n", " ") for v in row) + " |" for row in rows])
+
+
+def main():
+    data = json.loads((ROOT / "outputs/dashboard_ready/dashboard_data.json").read_text())
+    base, bal = data["runs"]["baseline"], data["runs"]["balanced"]
+    bm, tm, em = base["metrics"], bal["metrics"], bal["emotion_metrics"]
+    sampling = data["sampling"]
+    classes = tm["classes"]
+    matrix = tm["confusion_matrix"]
+    browser_path = ROOT / "outputs/browser_verification.json"
+    browser = json.loads(browser_path.read_text()) if browser_path.exists() else {}
+    html_path = ROOT / "dashboard.html"
+    ui_verified = html_path.exists() and browser.get("status") == "passed" and browser.get("dashboard_sha256") == file_hash(html_path)
+    stage_status = "Dashboard and analysis completed and browser-verified; student review and Canvas submission remain pending." if ui_verified else "Analysis and dashboard generated; browser validation of this exact build is pending."
+    screenshots = '''## Dashboard
 
 Repository: [Jade31413/MBAX6418-Assignment-01](https://github.com/Jade31413/MBAX6418-Assignment-01).
 
@@ -22,26 +41,45 @@ Switch between the balanced and first-100 runs; click any confusion-matrix cell 
 its reviews. Search or combine correctness, reference, prediction and emotion-agreement
 filters. Review titles open the full text, emotion scores and matched words. Charts remain
 scoped to the selected run while review filters change only the table.
+''' if ui_verified else "## Dashboard\n\nOpen `dashboard.html` locally. Run browser QA before using screenshots or submitting.\n"
+    overview = table(["Run", "Reviews", "Accuracy", "Balanced accuracy", "Macro F1", "Always-majority baseline"], [
+        [name, r["count"], pct(r["accuracy"]), pct(r["balanced_accuracy"]), f"{r['macro_f1']:.4f}", pct(r["majority_baseline_accuracy"])]
+        for name, r in (("Sequential binary", bm), ("Balanced three-class", tm))])
+    confusion = table(["Rating reference / predicted"] + classes, [[c] + matrix[i] for i, c in enumerate(classes)])
+    class_table = table(["Class", "Support", "Predicted", "Precision", "Recall", "F1"], [[c, p["support"], p["predicted_count"], pct(p["precision"]), pct(p["recall"]), f"{p['f1']:.4f}"] for c, p in tm["per_class"].items()])
+    neutral = matrix[classes.index("NEUTRAL")]
+    directions = sorted([(matrix[i][j], c, d) for i, c in enumerate(classes) for j, d in enumerate(classes) if i != j], reverse=True)
+    errors = "\n".join(f"- {c} → {d}: **{n}** reviews." for n, c, d in directions)
+    mismatches = [r for r in bal["reviews"] if not r["correct"]]
+    emotion_examples = [r for r in bal["reviews"] if not r["emotion_agree"]]
+    example_table = table(["ID", "Stars", "Reference → predicted", "Title", "Text excerpt (first 220 chars)"], [[r["review_id"], int(r["rating"]), r["true_sentiment"] + " → " + r["predicted_sentiment"], r["title"], r["text"][:220]] for r in mismatches[:5]])
+    emotion_table = table(["ID", "LLM", "NRC", "NRC tied maxima", "Matched terms"], [[r["review_id"], r["llm_emotion"], r["nrc_emotion"], ", ".join(r["nrc_top_emotions"]) or "none", ", ".join(f"{w} ({n})" for w, n in r["nrc_matched_words"].items())] for r in emotion_examples[:5]])
+    content = f'''# Amazon Gift Cards: Sentiment and Emotion Analysis
 
+**Status: {stage_status}**
+This is an agent-generated evidence draft. The student must check the saved outputs and revise
+the interpretations in their own words before submission.
+
+{screenshots}
 
 ## Scope and reproducibility
 
 We use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
 Gift Cards review category, collected by the McAuley Lab at UC San Diego.
-[Download the source data](https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Gift_Cards.jsonl.gz).
-The local file contains **152,410** reviews; **134,940**
-are rated 4–5 stars (88.54%).
+[Download the source data]({sampling['source_url']}).
+The local file contains **{sampling['population_size']:,}** reviews; **{sampling['population_classes']['POSITIVE']:,}**
+are rated 4–5 stars ({pct(sampling['population_classes']['POSITIVE']/sampling['population_size'])}).
 See [sampling manifest](data/prepared/sampling_manifest.json) for full population counts,
-the source SHA-256, selected row IDs and the seed (**6418**).
+the source SHA-256, selected row IDs and the seed (**{sampling['seed']}**).
 
 The binary baseline uses the first 100 rows, with 4–5 stars positive and 1–3 stars negative.
 The final run uses a uniform reservoir sample of 50 reviews per reference class from the
 entire file: 1–2 negative, 3 neutral, 4–5 positive. Sampling is without replacement within
-each class, using independent fixed random streams; 0 review IDs overlap the two runs.
+each class, using independent fixed random streams; {len(sampling['sample_overlap'])} review IDs overlap the two runs.
 The initial four smoke checks use synthetic examples, not evaluation data.
 
 The course endpoint is `http://dobolyi.com:9001/v1`, model
-`cyankiwi/Qwen3.6-35B-A3B-AWQ-4bit`. Python uses OpenAI-compatible Chat Completions,
+`{bal['run_manifest']['config']['model']}`. Python uses OpenAI-compatible Chat Completions,
 temperature 0, top-p 1, seed 6418, JSON output and disabled thinking. Only title and text
 are sent to the model; numeric rating and other metadata remain local. Titles may naturally
 contain words such as “Five Stars”; supplied title text is retained as instructed.
@@ -59,20 +97,17 @@ The runner resumes only missing rows and refuses to mix changed inputs or prompt
 
 ## What the two runs show
 
-| Run | Reviews | Accuracy | Balanced accuracy | Macro F1 | Always-majority baseline |
-| --- | --- | --- | --- | --- | --- |
-| Sequential binary | 100 | 98.00% | 92.32% | 0.9232 | 93.00% |
-| Balanced three-class | 150 | 73.33% | 73.33% | 0.6977 | 33.33% |
+{overview}
 
-The first batch has 93 positive and 7 negative
-reference labels. Its 98.00% accuracy exceeds the always-positive baseline of
-93.00%, but the dominant positive class heavily influences that headline.
-Negative recall is 85.71%, compared with
-98.92% for positive reviews. This is evidence of performance
+The first batch has {bm['per_class']['POSITIVE']['support']} positive and {bm['per_class']['NEGATIVE']['support']} negative
+reference labels. Its {pct(bm['accuracy'])} accuracy exceeds the always-positive baseline of
+{pct(bm['majority_baseline_accuracy'])}, but the dominant positive class heavily influences that headline.
+Negative recall is {pct(bm['per_class']['NEGATIVE']['recall'])}, compared with
+{pct(bm['per_class']['POSITIVE']['recall'])} for positive reviews. This is evidence of performance
 on this small sequential sample, not a population-wide estimate.
 
-With equal class support, majority guessing falls to 33.33%,
-and the neutral class becomes visible. The three-class run gets 110/150 correct.
+With equal class support, majority guessing falls to {pct(tm['majority_baseline_accuracy'])},
+and the neutral class becomes visible. The three-class run gets {tm['correct']}/{tm['count']} correct.
 **Both the sampling and the task change** (two labels become three, with a different prompt).
 The accuracy difference cannot be attributed solely to balancing.
 
@@ -80,38 +115,19 @@ The accuracy difference cannot be attributed solely to balancing.
 
 Rows are rating-derived reference labels; columns are model predictions.
 
-| Rating reference / predicted | NEGATIVE | NEUTRAL | POSITIVE |
-| --- | --- | --- | --- |
-| NEGATIVE | 46 | 2 | 2 |
-| NEUTRAL | 21 | 16 | 13 |
-| POSITIVE | 0 | 2 | 48 |
+{confusion}
 
-| Class | Support | Predicted | Precision | Recall | F1 |
-| --- | --- | --- | --- | --- | --- |
-| NEGATIVE | 50 | 67 | 68.66% | 92.00% | 0.7863 |
-| NEUTRAL | 50 | 20 | 80.00% | 32.00% | 0.4571 |
-| POSITIVE | 50 | 63 | 76.19% | 96.00% | 0.8496 |
+{class_table}
 
-Of 50 three-star reviews, **16** receive NEUTRAL, **21** NEGATIVE and
-**13** POSITIVE. The observed neutral behavior is described by these counts,
+Of 50 three-star reviews, **{neutral[1]}** receive NEUTRAL, **{neutral[0]}** NEGATIVE and
+**{neutral[2]}** POSITIVE. The observed neutral behavior is described by these counts,
 rather than assuming in advance that neutral must collapse into one other class.
 
-- NEUTRAL → NEGATIVE: **21** reviews.
-- NEUTRAL → POSITIVE: **13** reviews.
-- POSITIVE → NEUTRAL: **2** reviews.
-- NEGATIVE → POSITIVE: **2** reviews.
-- NEGATIVE → NEUTRAL: **2** reviews.
-- POSITIVE → NEGATIVE: **0** reviews.
+{errors}
 
 Example mismatches (selection: first five in source-line order; full text is in the saved review file):
 
-| ID | Stars | Reference → predicted | Title | Text excerpt (first 220 chars) |
-| --- | --- | --- | --- | --- |
-| gift_cards:1812 | 3 | NEUTRAL → POSITIVE | Family didn't know if this was a hack | Sent this to my brother-in-law for a Christmas gift. He didn't even know where it came from and thought it was a swindle. I had filled out the gift card that was supposed to be with it. He tried it for something, and it  |
-| gift_cards:12303 | 3 | NEUTRAL → NEGATIVE | Hard time uploading | Better to just buy the fortnights bucks on the system. These are harder to upload if your not in front of the device. |
-| gift_cards:13299 | 3 | NEUTRAL → NEGATIVE | Nice package, boring card | I was disappointed because all the other cards I ordered looked festive and appropriate for the Christmas packaging, but this one is the standard plain Amazon gift card and does not have a $ amount written on it.  The ot |
-| gift_cards:17899 | 3 | NEUTRAL → NEGATIVE | 1:1 Gift Card | It's a gift card with a 1:1 value.  Occasionally they'll give you $5 for the purchase of a gift card but outside of that what's the point.  Don't devalue your money. |
-| gift_cards:19061 | 3 | NEUTRAL → POSITIVE | good for birthdays | I give this to friends or family on special days |
+{example_table}
 
 The assignment uses ratings as the evaluation reference. A text/rating mismatch does not always
 mean the text interpretation is unreasonable: in the binary baseline, `gift_cards:99` says
@@ -136,20 +152,14 @@ not a ninth NRC emotion. Exact word matching has no stemming, negation or sarcas
 
 In the balanced run:
 
-- Primary-label agreement: **30/150 (20.00%)**.
-- No NRC emotional matches: **27** reviews.
-- Tied highest NRC scores: **72** reviews.
-- Agreement among the **123** reviews with any NRC emotional match: **13.82%**.
-- Agreement among the **51** reviews with a unique nonzero maximum: **19.61%**.
-- LLM label in the NRC top-score set: **42/123 (34.15%)** among matched reviews.
+- Primary-label agreement: **{em['agreement_count']}/{em['count']} ({pct(em['agreement_rate'])})**.
+- No NRC emotional matches: **{em['nrc_no_match_count']}** reviews.
+- Tied highest NRC scores: **{em['nrc_tie_count']}** reviews.
+- Agreement among the **{em['matched_count']}** reviews with any NRC emotional match: **{pct(em['matched_agreement_rate'])}**.
+- Agreement among the **{em['unique_max_count']}** reviews with a unique nonzero maximum: **{pct(em['unique_max_agreement_rate'])}**.
+- LLM label in the NRC top-score set: **{em['top_set_agreement_count']}/{em['matched_count']} ({pct(em['top_set_agreement_rate_among_matched'])})** among matched reviews.
 
-| ID | LLM | NRC | NRC tied maxima | Matched terms |
-| --- | --- | --- | --- | --- |
-| gift_cards:1812 | surprise | anticipation | anticipation | brother (1), gift (2), law (1), thought (1) |
-| gift_cards:4444 | joy | anticipation | anticipation, joy, surprise | gift (1), good (1) |
-| gift_cards:5481 | anger | fear | fear, sadness | pain (2) |
-| gift_cards:7443 | joy | none | none |  |
-| gift_cards:7653 | joy | anger | anger, anticipation, joy, surprise, trust | money (1) |
+{emotion_table}
 
 These are **agreement statistics, not emotion accuracy**: there are no human emotion labels.
 NRC measures context-free word associations, while the LLM interprets the review in context.
@@ -174,7 +184,7 @@ those explanations inspectable; they do not prove which method is correct.
 - [Dashboard handoff](DASHBOARD_HANDOFF.md): data contract and future browser acceptance checks.
 - [Verification](outputs/verification.json): sampling, request, metric, matrix and filter audits.
 
-Browser verification of this build: **passed**.
+Browser verification of this build: **{'passed' if ui_verified else 'pending'}**.
 See [browser verification](outputs/browser_verification.json) for exact-build checks of metrics,
 chart values, all 225 class/result/emotion filter combinations across the two runs, pagination,
 search, empty states, review details, mobile layout and 200% text enlargement. The offline
@@ -186,7 +196,7 @@ Python 3.9+ standard library only; there are no pip dependencies. Run from this 
 
 ```sh
 # Download the source if it is not already present:
-curl -fL 'https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Gift_Cards.jsonl.gz' -o data/Gift_Cards.jsonl.gz
+curl -fL '{sampling['source_url']}' -o data/Gift_Cards.jsonl.gz
 # Download NRC locally for educational use (do not redistribute it):
 python3 scripts/download_lexicon.py
 # Set COURSE_API_KEY in the environment using the course-provided credential.
@@ -242,3 +252,10 @@ Theme colors are centralized at the start of `dashboard/styles.css`.
 Before submission, personally review this draft and
 publish the report/code/outputs to your own GitHub repository. Submit that URL in Canvas.
 Exclude credentials, the large re-downloadable source and the non-redistributable NRC lexicon.
+'''
+    (ROOT / "README.md").write_text(content, encoding="utf-8")
+    print("Generated README.md evidence draft from saved metrics")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,12 @@
+{
+  "name": "NRC Word-Emotion Association Lexicon",
+  "version": "0.92",
+  "word_count": 14154,
+  "authors": "Saif M. Mohammad and Peter D. Turney, National Research Council Canada",
+  "source": "https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm",
+  "sha256": "02c661544f4f12ae0c14f9576a10959e8d39a151bb091e455a71a08dcaa2535a",
+  "method": "HTML-unescape and remove tags; lowercase ASCII word tokens including internal apostrophes; exact lookup; count occurrences; no stemming, lemmatization, negation or sarcasm handling.",
+  "tie_policy": "Alphabetically first highest-scoring emotion; preserve all tied emotions and tie flag.",
+  "no_match_policy": "none when all eight emotion scores are zero; none is an abstention, not an NRC category.",
+  "license": "Local non-commercial educational use; do not redistribute the lexicon."
+}

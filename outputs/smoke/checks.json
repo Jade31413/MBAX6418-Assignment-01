@@ -1,0 +1,22 @@
+[
+  {
+    "review_id": "synthetic:positive",
+    "expected": "POSITIVE",
+    "actual": "POSITIVE"
+  },
+  {
+    "review_id": "synthetic:negative",
+    "expected": "NEGATIVE",
+    "actual": "NEGATIVE"
+  },
+  {
+    "review_id": "synthetic:conflict",
+    "expected": "NEGATIVE",
+    "actual": "NEGATIVE"
+  },
+  {
+    "review_id": "synthetic:short",
+    "expected": "POSITIVE",
+    "actual": "POSITIVE"
+  }
+]
