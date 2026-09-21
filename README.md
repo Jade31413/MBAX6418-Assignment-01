@@ -238,7 +238,3 @@ Theme colors are centralized at the start of `dashboard/styles.css`.
   section-position tracking fixed it. Native review dialogs support Escape and restore focus.
 - Review text is rendered as text, and embedded JSON escapes script-closing characters.
   The dashboard loads locally without requesting fonts, libraries or model services.
-
-Before submission, personally review this draft and
-publish the report/code/outputs to your own GitHub repository. Submit that URL in Canvas.
-Exclude credentials, the large re-downloadable source and the non-redistributable NRC lexicon.
