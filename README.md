@@ -26,7 +26,7 @@ scoped to the selected run while review filters change only the table.
 
 ## Scope and reproducibility
 
-We use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
+Use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
 Gift Cards review category, collected by the McAuley Lab at UC San Diego.
 [Download the source data](https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Gift_Cards.jsonl.gz).
 The local file contains **152,410** reviews; **134,940**
