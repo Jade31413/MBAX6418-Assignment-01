@@ -64,7 +64,7 @@ the interpretations in their own words before submission.
 
 ## Scope and reproducibility
 
-We use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
+I use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
 Gift Cards review category, collected by the McAuley Lab at UC San Diego.
 [Download the source data]({sampling['source_url']}).
 The local file contains **{sampling['population_size']:,}** reviews; **{sampling['population_classes']['POSITIVE']:,}**
@@ -139,7 +139,7 @@ changing labels after seeing predictions.
 
 ## LLM versus NRC emotions
 
-We use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
+I use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
 version 0.92, created by Saif M. Mohammad and Peter D. Turney at the National Research Council Canada.
 Reference: Mohammad & Turney (2013), *Crowdsourcing a Word–Emotion Association Lexicon*,
 Computational Intelligence, 29(3), 436–465.
@@ -249,9 +249,6 @@ Theme colors are centralized at the start of `dashboard/styles.css`.
 - Review text is rendered as text, and embedded JSON escapes script-closing characters.
   The dashboard loads locally without requesting fonts, libraries or model services.
 
-Before submission, personally review this draft and
-publish the report/code/outputs to your own GitHub repository. Submit that URL in Canvas.
-Exclude credentials, the large re-downloadable source and the non-redistributable NRC lexicon.
 '''
     (ROOT / "README.md").write_text(content, encoding="utf-8")
     print("Generated README.md evidence draft from saved metrics")

@@ -26,7 +26,7 @@ scoped to the selected run while review filters change only the table.
 
 ## Scope and reproducibility
 
-Use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
+I use the [Amazon Reviews '23 dataset](https://amazon-reviews-2023.github.io/),
 Gift Cards review category, collected by the McAuley Lab at UC San Diego.
 [Download the source data](https://mcauleylab.ucsd.edu/public_datasets/data/amazon_2023/raw/review_categories/Gift_Cards.jsonl.gz).
 The local file contains **152,410** reviews; **134,940**
@@ -123,7 +123,7 @@ changing labels after seeing predictions.
 
 ## LLM versus NRC emotions
 
-Use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
+I use the [NRC Word-Emotion Association Lexicon (EmoLex)](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm),
 version 0.92, created by Saif M. Mohammad and Peter D. Turney at the National Research Council Canada.
 Reference: Mohammad & Turney (2013), *Crowdsourcing a Word–Emotion Association Lexicon*,
 Computational Intelligence, 29(3), 436–465.
